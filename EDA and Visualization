@@ -1,0 +1,12 @@
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Monthly sales trend
+monthly = df.groupby('month')['revenue'].sum()
+monthly.plot(kind='bar', title='Monthly Revenue')
+
+# Correlation heatmap
+sns.heatmap(df.corr(), annot=True, cmap='coolwarm')
+
+# Boxplot for revenue by channel
+sns.boxplot(x='channel', y='revenue', data=df)
