@@ -1,0 +1,25 @@
+-- Star schema: sales fact + dimensions
+CREATE TABLE dim_customer (
+    customer_id INT PRIMARY KEY,
+    name TEXT,
+    region TEXT,
+    signup_date DATE
+);
+
+CREATE TABLE dim_product (
+    product_id INT PRIMARY KEY,
+    category TEXT,
+    brand TEXT,
+    price NUMERIC
+);
+
+CREATE TABLE fact_sales (
+    sale_id SERIAL PRIMARY KEY,
+    customer_id INT,
+    product_id INT,
+    quantity INT,
+    sale_date DATE,
+    channel TEXT,
+    FOREIGN KEY (customer_id) REFERENCES dim_customer(customer_id),
+    FOREIGN KEY (product_id) REFERENCES dim_product(product_id)
+);
