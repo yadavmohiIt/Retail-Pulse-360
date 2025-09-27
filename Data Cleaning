@@ -1,0 +1,19 @@
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv('online_retail_II.csv')
+
+# Handle missing values
+df.fillna({'quantity': 0, 'channel': 'unknown'}, inplace=True)
+
+# Feature engineering
+df['month'] = pd.to_datetime(df['sale_date']).dt.month
+df['revenue'] = df['quantity'] * df['price']
+df['is_online'] = df['channel'].apply(lambda x: 1 if x == 'online' else 0)
+
+# RFM scoring
+rfm = df.groupby('customer_id').agg({
+    'sale_date': lambda x: (df['sale_date'].max() - x.max()).days,
+    'sale_id': 'count',
+    'revenue': 'sum'
+}).rename(columns={'sale_date': 'Recency', 'sale_id': 'Frequency', 'revenue': 'Monetary'})
