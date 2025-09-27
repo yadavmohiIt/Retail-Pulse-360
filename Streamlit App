@@ -5,7 +5,7 @@ import joblib
 
 st.title("Retail Pulse 360° Dashboard")
 
-df = pd.read_csv('online_retail_II.csv')
+df = pd.read_csv('salesdata.csv')
 model = joblib.load('models/sales_forecast.pkl')
 
 st.sidebar.selectbox("Choose Channel", df['channel'].unique())
