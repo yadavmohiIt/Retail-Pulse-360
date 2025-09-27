@@ -1,0 +1,22 @@
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+import joblib
+
+st.title("Retail Pulse 360° Dashboard")
+
+df = pd.read_csv('online_retail_II.csv')
+model = joblib.load('models/sales_forecast.pkl')
+
+st.sidebar.selectbox("Choose Channel", df['channel'].unique())
+
+st.write("Sales Overview")
+st.line_chart(df.groupby('month')['revenue'].sum())
+
+st.write("Predict Revenue")
+qty = st.slider("Quantity", 1, 100)
+price = st.slider("Price", 10, 500)
+is_online = st.selectbox("Channel", ['online', 'offline']) == 'online'
+
+pred = model.predict([[qty, price, int(is_online)]])
+st.metric("Predicted Revenue", f"₹{pred[0]:.2f}")
